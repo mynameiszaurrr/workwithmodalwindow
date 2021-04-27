@@ -2,27 +2,31 @@ const modalBtn = document.querySelectorAll('[data-modal]'),
     modalOpen = document.querySelector('.modal'),
     modalCloseBtn = document.querySelector('[data-close]');
 
+function displayNone () {
+    modalOpen.style.display = 'none';
+    document.body.style.overflow = 'scroll';
+}
+
+function showModal () {
+    modalOpen.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    clearTimeout(showTime)
+}
+
 function openModal (btn) {
     btn.forEach((item) => {
-        item.addEventListener('click', () => {
-            modalOpen.style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        })
+        item.addEventListener('click', showModal)
     })
 }
 
 function closeModal (closeBtn) {
-    closeBtn.addEventListener('click', () =>{
-        modalOpen.style.display = 'none';
-        document.body.style.overflow = 'scroll';
-    })
+    closeBtn.addEventListener('click', displayNone)
 }
 
 function closeWithClickBack (back) {
     back.addEventListener('click', (e) => {
         if (e.target === back) {
-            back.style.display = 'none';
-            document.body.style.overflow = 'scroll';
+            displayNone()
         }
     })
 }
@@ -30,8 +34,7 @@ function closeWithClickBack (back) {
 function closeWithEsc () {
     document.addEventListener('keydown', (e) =>{
         if (e.code === "Escape") {
-            modalOpen.style.display = 'none';
-            document.body.style.overflow = 'scroll';
+            displayNone()
         }
     })
 }
@@ -40,3 +43,11 @@ openModal(modalBtn);
 closeModal(modalCloseBtn);
 closeWithClickBack(modalOpen);
 closeWithEsc();
+
+const showTime = setTimeout(showModal, 2000)
+
+window.addEventListener('scroll',() =>{
+    if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
+        showModal()
+    }
+})
