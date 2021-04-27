@@ -44,10 +44,12 @@ closeModal(modalCloseBtn);
 closeWithClickBack(modalOpen);
 closeWithEsc();
 
-const showTime = setTimeout(showModal, 2000)
+const showTime = setTimeout(showModal, 5000)
 
-window.addEventListener('scroll',() =>{
+function showModalByScroll() {
     if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
-        showModal()
+        showModal();
+        window.removeEventListener('scroll',showModalByScroll);
     }
-})
+}
+window.addEventListener('scroll',showModalByScroll)
